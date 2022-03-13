@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
+
+export interface ISearchValue {
+  value: string;
+  fromUrl: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -7,26 +12,26 @@ import { BehaviorSubject, Subject } from "rxjs";
 export class SearchService {
 
   searchValue$: Subject<string> = new BehaviorSubject('');
-  searchValues$: Subject<string[]> = new BehaviorSubject([]);
+  searchValues$: Subject<ISearchValue[]> = new BehaviorSubject([]);
 
   constructor() { }
 
-  setSearchValue$(searchValue, saveInStorage = true) {
+  setSearchValue$(searchValue, fromUrl, saveInStorage = true) {
     this.searchValue$.next(searchValue);
 
     if (saveInStorage)
-      this.setSearchValues$(searchValue);
+      this.setSearchValues$(searchValue, fromUrl);
   }
 
-  setSearchValues$(searchValue) {
+  setSearchValues$(searchValue, fromUrl) {
     // get values from localstorage
-    let searchValues: string[] = JSON.parse(localStorage.getItem('searchValues'));
+    let searchValues: ISearchValue[] = JSON.parse(localStorage.getItem('searchValues'));
     if (!searchValues) searchValues = [];
 
     // update localstorage
     // if searchValue already exists in array, do not add again
-    if (!searchValues.some(e => e === searchValue)) {
-      searchValues.unshift(searchValue);
+    if (!searchValues.some(e => e.value === searchValue)) {
+      searchValues.unshift({ value: searchValue, fromUrl });
       const newSearchValues = searchValues.slice(0, 4);
 
       localStorage.setItem('searchValues', JSON.stringify(newSearchValues));

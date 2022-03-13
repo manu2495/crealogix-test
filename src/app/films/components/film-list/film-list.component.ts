@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SearchService} from "../../../shared/services/search.service";
 import {Film} from "../../models/film.model";
 import {FilmService} from "../../services/film.service";
@@ -15,16 +15,28 @@ export class FilmListComponent implements OnInit, OnDestroy {
   films$: Observable<Film[]>;
   searchValue$: Subscription;
 
+  hasParams: boolean = false;
   reloadList: boolean = false;
 
   constructor(private router: Router,
               private filmService: FilmService,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private activatedRoute: ActivatedRoute) {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.search) {
+        this.hasParams = true;
+        this.reloadList = true;
+        this.onSearchFilms(params.search);
+
+        this.searchService.setSearchValues$(params.search, '/films');
+      } else {
+        this.initFilms();
+      }
+    });
 
     this.searchValue$ = this.searchService.getSearchValue$().subscribe(searchValues => {
-      if (searchValues === '') {
-        this.initFilms();
-      } else {
+      if (searchValues !== '') {
         this.reloadList = true;
         this.onSearchFilms(searchValues);
       }
@@ -32,7 +44,6 @@ export class FilmListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initFilms();
   }
 
   ngOnDestroy() {
@@ -42,6 +53,13 @@ export class FilmListComponent implements OnInit, OnDestroy {
   initFilms() {
     this.reloadList = false;
     this.films$ = this.filmService.films$();
+
+    // remove query params from url if all list is reload
+    if (this.hasParams) {
+      this.router.navigate(['/films']).then(() => {
+        this.hasParams = false;
+      });
+    }
   }
 
   onSearchFilms(searchValue) {

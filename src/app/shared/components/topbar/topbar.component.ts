@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SearchService} from "../../services/search.service";
+import {ISearchValue, SearchService} from "../../services/search.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-topbar',
@@ -10,10 +11,11 @@ import {Subscription} from "rxjs";
 export class TopbarComponent implements OnInit, OnDestroy {
 
   searchValue: string = '';
-  searchValues: string[] = [];
+  searchValues: ISearchValue[] = [];
   searchValues$: Subscription;
 
-  constructor(private searchService: SearchService) {
+  constructor(private router: Router,
+              private searchService: SearchService) {
     this.searchValues$ = this.searchService.getSearchValues$().subscribe(searchValues => {
       if (searchValues.length === 0) {
         this.searchValues = this.searchService.getSearchValuesFromLocalStorage();
@@ -33,7 +35,16 @@ export class TopbarComponent implements OnInit, OnDestroy {
   onSearch(searchValue = '', saveInStorage = true) {
     if (searchValue === '' && this.searchValue === '') return;
 
-    this.searchService.setSearchValue$(searchValue === '' ? this.searchValue : searchValue, saveInStorage);
+    let url = this.router.url.replace('/view', '');
+    this.searchService.setSearchValue$(searchValue === '' ? this.searchValue : searchValue, url, saveInStorage);
     this.searchValue = '';
+  }
+
+  onSearchFromUrl(searchValue: ISearchValue) {
+    this.router.navigate([searchValue.fromUrl], {
+      queryParams: {
+        search: searchValue.value
+      }
+    }).then();
   }
 }

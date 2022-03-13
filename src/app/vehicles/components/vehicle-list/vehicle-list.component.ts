@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from "rxjs";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SearchService} from "../../../shared/services/search.service";
-import {Vehicle} from "../models/vehicle.model";
+import {Vehicle} from "../../models/vehicle.model";
 import {VehicleService} from "../../services/vehicle.service";
 
 @Component({
@@ -15,16 +15,30 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   vehicles$: Observable<Vehicle[]>;
   searchValue$: Subscription;
 
+  hasParams: boolean = false;
   reloadList: boolean = false;
 
   constructor(private router: Router,
               private searchService: SearchService,
-              private vehicleService: VehicleService) {
+              private vehicleService: VehicleService,
+              private activatedRoute: ActivatedRoute) {
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && params.search) {
+        this.hasParams = true;
+        this.reloadList = true;
+        this.onSearchVehicles(params.search);
+
+        // if someone write a params manually that does not exists in filterable list
+        // update localstorage with that value
+        this.searchService.setSearchValues$(params.search, '/vehicles');
+      } else {
+        this.initVehicles();
+      }
+    });
 
     this.searchValue$ = this.searchService.getSearchValue$().subscribe(searchValues => {
-      if (searchValues === '') {
-        this.initVehicles();
-      } else {
+      if (searchValues !== '') {
         this.reloadList = true;
         this.onSearchVehicles(searchValues);
       }
@@ -32,7 +46,6 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initVehicles();
   }
 
   ngOnDestroy() {
@@ -42,6 +55,13 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   initVehicles() {
     this.reloadList = false;
     this.vehicles$ = this.vehicleService.vehicles$();
+
+    // remove query params from url if all list is reload
+    if (this.hasParams) {
+      this.router.navigate(['/vehicles']).then(() => {
+        this.hasParams = false;
+      });
+    }
   }
 
   onSearchVehicles(searchValue) {

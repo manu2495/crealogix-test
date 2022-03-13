@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {VehicleService} from "../../services/vehicle.service";
-import {Vehicle} from "../models/vehicle.model";
+import {Vehicle} from "../../models/vehicle.model";
 
 @Component({
   selector: 'app-vehicle-view',

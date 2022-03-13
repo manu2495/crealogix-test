@@ -1,6 +1,6 @@
 <div class="topnav">
   <a *ngFor="let searchValue of searchValues"
-     (click)="onSearch(searchValue, false)">{{ searchValue }}</a>
+     (click)="onSearchFromUrl(searchValue)">{{ searchValue?.value }}</a>
   <div class="search-container">
     <form>
       <input type="text" placeholder="Search.." name="search" [(ngModel)]="searchValue">
