@@ -1,9 +1,9 @@
-.menu {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+.nav-item {
+  transition: 0.2s all ease-in-out !important;
 }
-
-.item {
-  padding: 20px 16px 20px 16px;
+.nav-item:hover {
+  opacity: 0.4 !important;
+}
+.nav-link {
+  color: rgba(255, 255, 355, 0.9) !important;
 }
