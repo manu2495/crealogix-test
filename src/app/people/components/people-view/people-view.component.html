@@ -1,0 +1,12 @@
+<div class="card mx-3">
+  <div class="card-body">
+    <p><span>Name:</span> {{ person?.name }}</p>
+    <p><span>Height:</span> {{ person?.height }}</p>
+    <p><span>Gender:</span> {{ person?.gender }}</p>
+    <p><span>Birth Year:</span> {{ person?.birthYear }}</p>
+    <p><span>Home World:</span> {{ person?.homeWorld }}</p>
+
+    <button class="btn btn-primary" [routerLink]="'/people'"><i class="fa fa-chevron-left"></i> GO BACK</button>
+
+  </div>
+</div>

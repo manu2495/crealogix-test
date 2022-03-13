@@ -1,0 +1,10 @@
+<div class="topnav">
+  <a *ngFor="let searchValue of searchValues"
+     (click)="onSearch(searchValue, false)">{{ searchValue }}</a>
+  <div class="search-container">
+    <form>
+      <input type="text" placeholder="Search.." name="search" [(ngModel)]="searchValue">
+      <button class="btn btn-outline-primary" (click)="onSearch()"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>

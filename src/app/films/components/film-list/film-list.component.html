@@ -1,0 +1,27 @@
+<ng-template #loading>
+  <div class="loading ms-3">loading films...</div>
+</ng-template>
+<div *ngIf="reloadList">
+  <button class="btn btn-outline-primary mb-3 ms-3"
+          (click)="initFilms()"><i class="fa fa-refresh"></i> Show all records</button>
+</div>
+<ng-container *ngIf="films$ | async as films else loading">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Director</th>
+        <th>Release Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let film of films" (click)="showFilm(film)">
+        <td>{{ film?.title }}</td>
+        <td>{{ film?.director }}</td>
+        <td>{{ film?.releaseDate }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

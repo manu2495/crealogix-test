@@ -1,0 +1,12 @@
+<div class="card mx-3">
+  <div class="card-body">
+    <p><span>Name:</span> {{ starship?.name }}</p>
+    <p><span>Model:</span> {{ starship?.model }}</p>
+    <p><span>Starship Class:</span> {{ starship?.starshipClass }}</p>
+    <p><span>Max Atmosphering Speed:</span> {{ starship?.maxAtmospheringSpeed }}</p>
+    <p><span>Length:</span> {{ starship?.length }}</p>
+    <p><span>MGLT:</span> {{ starship?.MGLT }}</p>
+
+    <button class="btn btn-primary" [routerLink]="'/starships'"><i class="fa fa-chevron-left"></i> GO BACK</button>
+  </div>
+</div>

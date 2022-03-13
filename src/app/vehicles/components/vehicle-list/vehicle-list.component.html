@@ -1,0 +1,27 @@
+<ng-template #loading>
+  <div class="loading ms-3">loading vehicles...</div>
+</ng-template>
+<div *ngIf="reloadList">
+  <button class="btn btn-outline-primary mb-3 ms-3"
+          (click)="initVehicles()"><i class="fa fa-refresh"></i> Show all records</button>
+</div>
+<ng-container *ngIf="vehicles$ | async as vehicles else loading">
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Model</th>
+        <th>Manufacturer</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let vehicle of vehicles" (click)="showVehicle(vehicle)">
+        <td>{{ vehicle?.name }}</td>
+        <td>{{ vehicle?.model }}</td>
+        <td>{{ vehicle?.manufacturer }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-container>

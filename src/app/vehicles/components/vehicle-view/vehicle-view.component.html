@@ -1,0 +1,13 @@
+<div class="card mx-3">
+  <div class="card-body">
+    <p><span class="fw-bold">Name:</span> {{ vehicle?.name }}</p>
+    <p><span class="fw-bold">Model:</span> {{ vehicle?.model }}</p>
+    <p><span class="fw-bold">Crew:</span> {{ vehicle?.crew }}</p>
+    <p><span class="fw-bold">Manufacturer:</span> {{ vehicle?.manufacturer }}</p>
+    <p><span class="fw-bold">Passengers:</span> {{ vehicle?.passengers }}</p>
+    <p><span class="fw-bold">Cost in Credits:</span> {{ vehicle?.costInCredits }}</p>
+
+
+    <button class="btn btn-primary" [routerLink]="'/vehicles'"><i class="fa fa-chevron-left"></i> GO BACK</button>
+  </div>
+</div>

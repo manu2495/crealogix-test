@@ -1,0 +1,12 @@
+<div class="card mx-3">
+  <div class="card-body">
+    <p><span class="fw-bold">Name:</span> {{ species?.name }}</p>
+    <p><span class="fw-bold">Skin Colors:</span> {{ species?.skinColors }}</p>
+    <p><span class="fw-bold">Classification:</span> {{ species?.classification }}</p>
+    <p><span class="fw-bold">Language:</span> {{ species?.language }}</p>
+    <p><span class="fw-bold">Average Lifespan:</span> {{ species?.averageLifespan }}</p>
+    <p><span class="fw-bold">Home World:</span> {{ species?.homeWorld }}</p>
+
+    <button class="btn btn-primary" [routerLink]="'/species'"><i class="fa fa-chevron-left"></i> GO BACK</button>
+  </div>
+</div>

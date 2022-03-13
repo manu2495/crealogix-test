@@ -1,0 +1,13 @@
+<div class="card mx-3">
+  <div class="card-body">
+    <p><span class="fw-bold">Title:</span> {{ film?.title }}</p>
+    <p><span class="fw-bold">Director:</span> {{ film?.director }}</p>
+    <p><span class="fw-bold">Producer Class:</span> {{ film?.producer }}</p>
+    <p><span class="fw-bold">Release Date:</span> {{ film?.releaseDate }}</p>
+    <p><span class="fw-bold">Episode ID:</span> {{ film?.episodeId }}</p>
+    <p><span class="fw-bold">Opening Crawl:</span></p>
+    <p>{{ film?.openingCrawl }}</p>
+
+    <button class="btn btn-primary" [routerLink]="'/films'"><i class="fa fa-chevron-left"></i> GO BACK</button>
+  </div>
+</div>
