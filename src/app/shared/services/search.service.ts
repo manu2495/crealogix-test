@@ -11,13 +11,13 @@ export interface ISearchValue {
 })
 export class SearchService {
 
-  searchValue$: Subject<string> = new BehaviorSubject('');
+  searchValue$: Subject<ISearchValue> = new BehaviorSubject(undefined);
   searchValues$: Subject<ISearchValue[]> = new BehaviorSubject([]);
 
   constructor() { }
 
   setSearchValue$(searchValue, fromUrl, saveInStorage = true) {
-    this.searchValue$.next(searchValue);
+    this.searchValue$.next({ value: searchValue, fromUrl });
 
     if (saveInStorage)
       this.setSearchValues$(searchValue, fromUrl);

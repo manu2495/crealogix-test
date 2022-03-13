@@ -14,6 +14,7 @@ export class FilmListComponent implements OnInit, OnDestroy {
 
   films$: Observable<Film[]>;
   searchValue$: Subscription;
+  activatedRoute$: Subscription;
 
   hasParams: boolean = false;
   reloadList: boolean = false;
@@ -23,7 +24,7 @@ export class FilmListComponent implements OnInit, OnDestroy {
               private searchService: SearchService,
               private activatedRoute: ActivatedRoute) {
 
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute$ = this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.search) {
         this.hasParams = true;
         this.reloadList = true;
@@ -36,9 +37,9 @@ export class FilmListComponent implements OnInit, OnDestroy {
     });
 
     this.searchValue$ = this.searchService.getSearchValue$().subscribe(searchValues => {
-      if (searchValues !== '') {
+      if (searchValues && searchValues.fromUrl === '/films') {
         this.reloadList = true;
-        this.onSearchFilms(searchValues);
+        this.onSearchFilms(searchValues.value);
       }
     })
   }
@@ -48,6 +49,7 @@ export class FilmListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.searchValue$) this.searchValue$.unsubscribe();
+    if (this.activatedRoute$) this.activatedRoute$.unsubscribe();
   }
 
   initFilms() {

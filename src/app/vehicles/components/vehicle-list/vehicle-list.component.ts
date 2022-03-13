@@ -14,6 +14,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
   vehicles$: Observable<Vehicle[]>;
   searchValue$: Subscription;
+  activatedRoute$: Subscription;
 
   hasParams: boolean = false;
   reloadList: boolean = false;
@@ -23,7 +24,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
               private vehicleService: VehicleService,
               private activatedRoute: ActivatedRoute) {
 
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute$ = this.activatedRoute.queryParams.subscribe(params => {
       if (params && params.search) {
         this.hasParams = true;
         this.reloadList = true;
@@ -38,9 +39,9 @@ export class VehicleListComponent implements OnInit, OnDestroy {
     });
 
     this.searchValue$ = this.searchService.getSearchValue$().subscribe(searchValues => {
-      if (searchValues !== '') {
+      if (searchValues && searchValues.fromUrl === '/vehicles') {
         this.reloadList = true;
-        this.onSearchVehicles(searchValues);
+        this.onSearchVehicles(searchValues.value);
       }
     })
   }
@@ -50,6 +51,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.searchValue$) this.searchValue$.unsubscribe();
+    if (this.activatedRoute$) this.activatedRoute$.unsubscribe();
   }
 
   initVehicles() {
